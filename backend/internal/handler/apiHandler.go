@@ -26,8 +26,15 @@ func SetupAPIHandler(rdb *redis.Client) (*gin.Engine, error) {
 
 	handler := NewHandler(service)
 
+	r.GET("/healthz", handler.HealthCheck)
 	r.GET("/get-url", handler.GetUrl)
 	r.POST("/post-url", handler.PostUrl)
 
 	return r, nil
+}
+
+func (h *Handler) HealthCheck(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"status": "OK",
+	})
 }
