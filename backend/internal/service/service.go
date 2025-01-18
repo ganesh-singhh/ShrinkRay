@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	db "github.com/Avon11/ShrinkRay/internal/DB"
 	domainio "github.com/Avon11/ShrinkRay/internal/DomainIo"
+	"github.com/Avon11/ShrinkRay/internal/db"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 )

@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Avon11/ShrinkRay/internal/db"
 	api "github.com/Avon11/ShrinkRay/internal/handler"
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
@@ -52,7 +53,10 @@ func init() {
 	if err != nil {
 		log.Printf("Failed to connect to Redis: %v", err)
 	}
-
+	_, err = db.CheckConnectivity()
+	if err != nil {
+		log.Printf("Failed to connect to Mongo DB! %v", err)
+	}
 }
 
 func main() {
