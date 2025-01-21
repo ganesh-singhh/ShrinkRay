@@ -23,7 +23,7 @@ func SetupAPIHandler(rdb *redis.Client) (*gin.Engine, error) {
 	// Initialize the Gin router
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -35,9 +35,9 @@ func SetupAPIHandler(rdb *redis.Client) (*gin.Engine, error) {
 
 	handler := NewHandler(service)
 
-	r.GET("/healthz", handler.HealthCheck)
-	r.GET("/get-url", handler.GetUrl)
-	r.POST("/post-url", handler.PostUrl)
+	r.GET("/api/healthz", handler.HealthCheck)
+	r.GET("/api/get-url", handler.GetUrl)
+	r.POST("/api/post-url", handler.PostUrl)
 
 	return r, nil
 }

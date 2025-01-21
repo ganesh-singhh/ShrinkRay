@@ -3,6 +3,7 @@ package service
 import (
 	"crypto/rand"
 	"log"
+	"os"
 	"time"
 
 	db "github.com/Avon11/ShrinkRay/internal/db"
@@ -11,7 +12,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-const prefix = "http://localhost:3000/"
+var prefix = os.Getenv("DOMAIN_NAME")
 
 type ShortCodeService struct {
 	RedisClient *redis.Client
