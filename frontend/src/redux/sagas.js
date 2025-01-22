@@ -10,8 +10,7 @@ import {
 
 function* shortenUrlSaga(action) {
   try {
-    const APP_URL = process.env.DOMAIN_NAME;
-    const response = yield call(fetch, APP_URL + "/post-url", {
+    const response = yield call(fetch, "http://localhost:8080/post-url", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: action.payload }),
@@ -30,8 +29,9 @@ function* shortenUrlSaga(action) {
 function* getOriginalUrlSaga(action) {
   try {
     const { code, checkOnly } = action.payload;
-    const url = APP_URL + `/get-url?code=${code}${checkOnly ? "_" : ""
-      }`;
+    const url = `http://localhost:8080/get-url?code=${code}${
+      checkOnly ? "_" : ""
+    }`;
     const response = yield call(fetch, url);
     const data = yield response.json();
     if (data.code === 200 || data.code === 201) {
