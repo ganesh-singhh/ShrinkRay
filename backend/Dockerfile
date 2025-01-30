@@ -18,8 +18,6 @@ COPY --from=builder /app/.env /app/.env
 
 RUN chmod +x /app/shrinkray
 
-EXPOSE 8080
-
 # RUN file /app/shrinkray
 
 CMD ["/app/shrinkray"]

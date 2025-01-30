@@ -15,6 +15,4 @@ COPY --from=build /app/frontend .
 
 RUN npm ci --only=production && npm install -g serve
 
-EXPOSE 3000
-
-CMD ["sh", "-c", "serve -s builds/frontend-builds/ -l ${FRONTEND_PORT:-3000}"]
+CMD ["sh", "-c", "serve -s /app/frontend/build/ -l ${FRONTEND_PORT:-3000}"]
