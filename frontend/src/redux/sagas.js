@@ -8,9 +8,11 @@ import {
   GET_ORIGINAL_URL_FAILURE,
 } from "./actions";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+
 function* shortenUrlSaga(action) {
   try {
-    const response = yield call(fetch, "http://localhost:8080/post-url", {
+    const response = yield call(fetch, `${API_BASE_URL}/api/v1/post-url`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: action.payload }),
@@ -29,7 +31,7 @@ function* shortenUrlSaga(action) {
 function* getOriginalUrlSaga(action) {
   try {
     const { code, checkOnly } = action.payload;
-    const url = `http://localhost:8080/get-url?code=${code}${
+    const url = `${API_BASE_URL}/api/v1/get-url?code=${code}${
       checkOnly ? "_" : ""
     }`;
     const response = yield call(fetch, url);

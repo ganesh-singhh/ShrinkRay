@@ -13,8 +13,8 @@ WORKDIR /app/frontend
 
 COPY --from=build /app/frontend .
 
-RUN npm ci --only=production
+RUN npm ci --only=production && npm install -g serve
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm", "start"]
+CMD ["sh", "-c", "serve -s builds/frontend-builds/ -l ${FRONTEND_PORT:-3000}"]

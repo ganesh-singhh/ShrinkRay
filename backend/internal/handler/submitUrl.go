@@ -52,6 +52,7 @@ func (h *Handler) PostUrl(c *gin.Context) {
 		Msg:   msg,
 		Model: respModel,
 	}
+	// log.Printf("url: %s", respModel)
 
 	c.JSON(code, response)
 }

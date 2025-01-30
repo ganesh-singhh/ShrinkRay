@@ -35,9 +35,9 @@ func SetupAPIHandler(rdb *redis.Client) (*gin.Engine, error) {
 
 	handler := NewHandler(service)
 
-	r.GET("/healthz", handler.HealthCheck)
-	r.GET("/get-url", handler.GetUrl)
-	r.POST("/post-url", handler.PostUrl)
+	r.GET("/api/v1/healthz", handler.HealthCheck)
+	r.GET("/api/v1/get-url", handler.GetUrl)
+	r.POST("/api/v1/post-url", handler.PostUrl)
 
 	return r, nil
 }

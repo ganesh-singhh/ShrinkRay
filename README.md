@@ -125,7 +125,7 @@ The React app will start on `http://localhost:3000` by default.
 
 1. Create a short URL
 
-   - Endpoint: `POST /post-url`
+   - Endpoint: `POST /api/v1/post-url`
    - Request body:
      ```json
      {
@@ -138,14 +138,14 @@ The React app will start on `http://localhost:3000` by default.
        "code": 200,
        "msg": "success",
        "model": {
-         "url": "https://ShrinkRay.com/06SWjw"
+         "url": "https://shrinkray.com/06SWjw"
        }
      }
      ```
 
 2. Redirect to original URL
 
-   - Endpoint: `GET /get-url?code=abc123`
+   - Endpoint: `GET api/v1/get-url?code=abc123`
    - Response: Get redirect url with code `200`
      ```json
      {
@@ -159,7 +159,7 @@ The React app will start on `http://localhost:3000` by default.
      ```
 
 3. Check original URL before redirecting - Add `_` at end of shortcode
-   - Endpoint: `GET /get-url?code=abc123_`
+   - Endpoint: `GET api/v1/get-url?code=abc123_`
    - Response: Get redirect url with code `201`
      ```json
      {
