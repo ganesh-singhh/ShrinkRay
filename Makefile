@@ -2,7 +2,7 @@ all: clean backend frontend
 
 .DEFAULT_GOAL := all
 
-PORT ?= 3000
+FRONTEND_PORT ?= 3000
 
 clean:
 	@echo "Cleaning up..."
@@ -32,7 +32,7 @@ frontend:
 
 serve-frontend:
 	@echo "Starting frontend hosting..."
-	serve -s builds/frontend-builds/ -l $(PORT)
+	serve -s builds/frontend-builds/ -l $(FRONTEND_PORT)
 
 
 serve-backend:

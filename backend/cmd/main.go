@@ -16,6 +16,7 @@ import (
 
 var ctx = context.Background()
 var rdb *redis.Client
+var BackendPort string
 
 type RedisCreds struct {
 	Addr     string
@@ -45,6 +46,12 @@ func init() {
 		DB:       rdsCreds.Database,
 	})
 
+	BackendPort = os.Getenv("BACKEND_PORT")
+	if BackendPort == "" {
+		log.Println("env. BACKEND_PORT not found, setting default port :8080")
+		BackendPort = ":8080"
+	}
+
 	// Test Redis connection
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
@@ -65,8 +72,9 @@ func main() {
 		log.Fatalf("Failed to setup API handler: %v", err)
 	}
 
+	log.Println("serving backend on", BackendPort)
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    BackendPort,
 		Handler: router,
 	}
 
