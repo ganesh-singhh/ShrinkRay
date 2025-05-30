@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
@@ -20,7 +21,7 @@ func CreateConnectionToShortCodeDB() (collection *mongo.Collection, client *mong
 	}
 
 	// Get db connection from env file
-	dbConnection := os.Getenv("DB_KEY")
+	dbConnection := os.Getenv("MONGO_URI")
 	opts := options.Client().ApplyURI(dbConnection).SetServerAPIOptions(serverAPI)
 
 	// Create a new client and connect to the server
@@ -99,4 +100,28 @@ func GetUrlByShortCode(shortCode string) (url string, err error) {
 
 	log.Printf("URL not found in document for shortCode: %s", shortCode)
 	return "", fmt.Errorf("URL not found for shortcode: %s", shortCode)
+}
+
+func CheckConnectivity() (*mongo.Client, error) {
+	mongoURI := os.Getenv("MONGO_URI")
+	if mongoURI == "" {
+		log.Fatal("MONGO_URI is not set")
+	}
+
+	clientOptions := options.Client().ApplyURI(mongoURI)
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	// Ping the database to verify connection
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := client.Ping(ctx, nil); err != nil {
+		return nil, err
+	}
+
+	log.Println("Connected to MongoDB!")
+	return client, nil
 }

@@ -1,0 +1,53 @@
+services:
+  backend:
+    image: ganeshsinghh/shrinkray-backend
+    # build:
+    #   context: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_ADDR=redis:6379
+      - REDIS_PASSWORD=
+      - REDIS_DB=0
+      - GIN_MODE=release
+      - BACKEND_PORT=:8080
+      - FRONTEND_URL=http://localhost:3000/
+    depends_on:
+      - mongodb
+      - redis
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass", ""]
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  frontend:
+    image: ganeshsinghh/shrinkray-frontend
+    # build:
+    #   context: ./frontend
+      # args:
+      #   - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL:-http://localhost:8080}
+      #   - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+    ports:
+      - "3000:3000"
+    environment:
+      - FRONTEND_PORT=3000
+      - REACT_APP_API_BASE_URL=http://localhost:8080
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:

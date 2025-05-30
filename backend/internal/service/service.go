@@ -3,18 +3,31 @@ package service
 import (
 	"crypto/rand"
 	"log"
+	"os"
 	"time"
 
-	db "github.com/Avon11/ShrinkRay/internal/DB"
-	domainio "github.com/Avon11/ShrinkRay/internal/DomainIo"
+	db "github.com/Avon11/ShrinkRay/internal/db"
+	domainio "github.com/Avon11/ShrinkRay/internal/domainIo"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	"github.com/joho/godotenv"
 )
 
-const prefix = "http://localhost:3000/"
+var Prefix string
 
 type ShortCodeService struct {
 	RedisClient *redis.Client
+}
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+	Prefix = os.Getenv("FRONTEND_URL")
+	if Prefix == "" {
+		log.Fatalln("missing env. 'FRONTEND_URL'")
+	}
 }
 
 func NewCodeService(redisClient *redis.Client) *ShortCodeService {
@@ -57,7 +70,7 @@ func (s *ShortCodeService) CreateShortUrl(c *gin.Context, oldUrl string) (shortC
 		log.Println("Error while creating short code", err)
 		return
 	}
-	shortUrl := prefix + shortUrlCode
+	shortUrl := Prefix + shortUrlCode
 	shortCode = &domainio.ShortCodeDomain{
 		Url: shortUrl,
 	}
@@ -158,7 +171,7 @@ func (s *ShortCodeService) RedirectUrl(c *gin.Context, shortUrl string) (redirec
 	if err != nil {
 		log.Printf("Error saving URL to cache: %v", err)
 	}
-
+	// log.Printf("url: %s", url)
 	redirectUrl.Url = url
 	return
 }
